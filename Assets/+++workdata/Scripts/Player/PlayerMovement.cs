@@ -11,20 +11,16 @@ public class PlayerMovement : MonoBehaviour
         stun
     }
 
-    #region serialized fields
     [SerializeField] float sprintSpeed;
     [SerializeField] float smoothing = 10;
     [SerializeField] ControlState controlState;
     [SerializeField] bool isPerformingMove;
     [SerializeField] float speed;
-    #endregion
 
-    #region private fields
     Vector2 movement;
     Vector2 moveSafe;
     PlayerInputActions inputActions;
     NavMeshAgent agent;
-    #endregion
 
     void Awake()
     {

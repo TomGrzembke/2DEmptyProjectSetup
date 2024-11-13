@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 
 public class MoveRB : RBGetter
 {
-    #region serialized fields
-
     [SerializeField] AnimationCurve moveCurve;
     [SerializeField] float maxSpeedDistance;
 
@@ -27,9 +25,7 @@ public class MoveRB : RBGetter
     Coroutine moveRoutine;
     Coroutine dashRoutine;
     Coroutine dashCooldownRoutine;
-    #endregion
 
-    #region private fields
     public Vector2 MoveDir
     {
         get
@@ -43,7 +39,6 @@ public class MoveRB : RBGetter
         }
         private set { }
     }
-    #endregion
 
     protected override void AwakeInternal()
     {
