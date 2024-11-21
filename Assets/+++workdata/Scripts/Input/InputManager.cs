@@ -6,13 +6,11 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
     PlayerInputActions input;
-
-    public Vector2 MousePos => mousePos;
-    [SerializeField] Vector2 mousePos;
-
     Camera cam;
-    public Vector2 MovementVec => movementVec;
-    [SerializeField] Vector2 movementVec;
+
+    [field: SerializeField] public Vector2 MousePos { get; private set; } 
+    [field: SerializeField] public Vector2 MovementVec { get; private set; } 
+    [field: SerializeField] public bool MoveStutter { get; private set; }   
 
     public InputAction moveAction
     {
@@ -20,7 +18,13 @@ public class InputManager : MonoBehaviour
         private set;
     }
 
-    public bool HasMoveInput => movementVec.magnitude > 0 || leftclickAction.IsPressed() || rightClickAction.IsPressed();
+    public InputAction stutterMoveAction
+    {
+        get;
+        private set;
+    }
+
+    public bool HasMoveInput => MovementVec.magnitude > 0 || leftclickAction.IsPressed() || rightClickAction.IsPressed();
 
     public InputAction leftclickAction
     {
@@ -43,6 +47,10 @@ public class InputManager : MonoBehaviour
         moveAction.performed += ctx => Movement(ctx.ReadValue<Vector2>().normalized);
         moveAction.canceled += ctx => Movement(ctx.ReadValue<Vector2>().normalized);
 
+        stutterMoveAction = input.Player.StutterMove;
+        stutterMoveAction.performed += ctx => MovementStutter(true);
+        stutterMoveAction.canceled += ctx => MovementStutter(false);
+
         leftclickAction = input.Player.LeftClick;
         rightClickAction = input.Player.RightClick;
     }
@@ -52,7 +60,8 @@ public class InputManager : MonoBehaviour
         cam = Camera.main;
     }
 
-    void Movement(Vector2 direction) => movementVec = direction;
+    void Movement(Vector2 direction) => MovementVec = direction;
+    void MovementStutter(bool stutter) => MoveStutter = stutter;
 
     void Update()
     {
@@ -60,7 +69,7 @@ public class InputManager : MonoBehaviour
             cam = Camera.main;
 
         if (cam)
-            mousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            MousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
     }
 
     /// <summary> Takes a Method and an Inputaction to subscribe them</summary>

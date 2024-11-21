@@ -14,6 +14,8 @@ public class TopDownMovement : RBGetter
 
     void Update()
     {
+        print("Stutter: " + InputManager.Instance.MoveStutter);
+
         if (InputManager.Instance.MovementVec != Vector2.zero)
         {
             walkingTime += Time.fixedDeltaTime;
