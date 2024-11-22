@@ -24,7 +24,7 @@ public class InputManager : MonoBehaviour
         private set;
     }
 
-    public bool HasMoveInput => MovementVec.magnitude > 0 || leftclickAction.IsPressed() || rightClickAction.IsPressed();
+    public bool HasMoveInput => MovementVec.magnitude > 0;
 
     public InputAction leftclickAction
     {
