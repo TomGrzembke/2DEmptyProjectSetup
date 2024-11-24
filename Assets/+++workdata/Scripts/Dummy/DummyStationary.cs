@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class DummyStationary : RBGetter
 {
-    [SerializeField] Transform dummyOriginalPos;
-    [SerializeField] float divisionAmount = 10;
+    [SerializeField] Transform dummyOrigTrans;
+    [SerializeField] float speed = 10;
+    [SerializeField] float stoppingDist = 5;
 
     protected override void AwakeInternal()
     {
@@ -11,6 +12,14 @@ public class DummyStationary : RBGetter
 
     void FixedUpdate()
     {
-        transform.localPosition = Vector3.Lerp(transform.localPosition, dummyOriginalPos.localPosition, Mathf.Clamp01(Vector3.Distance(transform.localPosition, dummyOriginalPos.localPosition) / divisionAmount));
+        LerpResetPos();
+
+    }
+
+    void LerpResetPos()
+    {
+        if (stoppingDist > Vector3.Distance(transform.position, dummyOrigTrans.position)) return;
+
+        rb.AddForce((dummyOrigTrans.position.normalized - transform.position.normalized) * speed, ForceMode2D.Force);
     }
 }
